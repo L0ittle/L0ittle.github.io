@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Casey Lu&#39;s BLOG</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://caseylu.com/"/>
+  <updated>2020-02-29T15:23:50.181Z</updated>
+  <id>http://caseylu.com/</id>
+  
+  <author>
+    <name>Casey Lu</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>四年一遇的日子~~~我的个人博客上线了</title>
+    <link href="http://caseylu.com/2020/02/29/wo-de-ge-ren-bo-ke-shang-xian-liao/"/>
+    <id>http://caseylu.com/2020/02/29/wo-de-ge-ren-bo-ke-shang-xian-liao/</id>
+    <published>2020-02-29T15:10:00.000Z</published>
+    <updated>2020-02-29T15:23:50.181Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;pre&gt;&lt;code&gt;    思考了关于很多个人将来的打算，现阶段处于知识储备阶段，对于前段学习的内容虽然有基础，仍然需要进阶。
+
+    今天看了很多大牛的博客，尤其是冴羽大大的还有小伍小姐的Blog，感触很深。优秀的人总是会始终坚持着自己的习惯。
+
+   
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://caseylu.com/2020/02/29/hello-world/"/>
+    <id>http://caseylu.com/2020/02/29/hello-world/</id>
+    <published>2020-02-29T14:40:35.465Z</published>
+    <updated>2020-02-29T14:40:35.469Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+</feed>
