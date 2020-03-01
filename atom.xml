@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://caseylu.com/"/>
-  <updated>2020-03-01T06:50:35.763Z</updated>
+  <updated>2020-03-01T13:53:55.372Z</updated>
   <id>http://caseylu.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JS中的异步“承诺”Promise</title>
+    <link href="http://caseylu.com/2020/03/01/js-zhong-de-yi-bu-cheng-nuo-promise/"/>
+    <id>http://caseylu.com/2020/03/01/js-zhong-de-yi-bu-cheng-nuo-promise/</id>
+    <published>2020-03-01T13:53:55.302Z</published>
+    <updated>2020-03-01T13:53:55.372Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;最近在复习JS的知识，其中JS中的异步是最频繁被提及的，决定结合现阶段的学习来简单地梳理一下个人理解。&lt;/p&gt;
+&lt;p&gt;JS
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>四年一遇的日子~~~我的个人博客上线了</title>

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="四年一遇的日子~~~我的个人博客上线了, Casey Lu&#39;s BLOG">
+    <meta name="keywords" content="JS中的异步“承诺”Promise, Casey Lu&#39;s BLOG">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>四年一遇的日子~~~我的个人博客上线了 | Casey Lu&#39;s BLOG</title>
+    <title>JS中的异步“承诺”Promise | Casey Lu&#39;s BLOG</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -304,12 +304,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">四年一遇的日子~~~我的个人博客上线了</h1>
+                    <h1 class="description center-align post-title">JS中的异步“承诺”Promise</h1>
                 </div>
             </div>
         </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-02-29
+                    2020-03-01
                 </div>
                 
 
@@ -455,10 +455,134 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>思考了关于很多个人将来的打算，现阶段处于知识储备阶段，对于前段学习的内容虽然有基础，仍然需要进阶。</p>
-<p>今天看了很多大牛的博客，尤其是冴羽大大的还有小伍小姐的Blog，感触很深。优秀的人总是会始终坚持着自己的习惯。</p>
-<p>于是晚上建了个人博客，准备随便写写东西，当做自己的积累，也当做分享。今后我也要开始认真经营自己的博客了，我相信，用心做的事情肯定能够做好~无论是对于个人的自我提升，还是今后的职业规划，个人生活，都需要持之以恒的信念和点点滴滴的积累。刚巧碰上今天这一个四年一遇的日子，就作为ccBlog的生日吧！</p>
-<p>20200229，继续热爱前端，热爱生活，冲鸭！</p>
+                <p>最近在复习JS的知识，其中JS中的异步是最频繁被提及的，决定结合现阶段的学习来简单地梳理一下个人理解。</p>
+<p>JS 是一种典型的单线程语言，这是由它在浏览器上运行的性质所决定的。若在并行的线程中实现，并行的线程上无法实现对DOM的修改，此外发生重定向到另一个URL是非常危险的。这时候就有一个不容小觑的问题，JS在单线程上运行时，尤其是处理向服务器发出请求这种较慢的进程时，会使得浏览器处于漫长的等待响应中而被锁定。</p>
+<p><strong>解决这种问题的方式就是——异步</strong></p>
+<p>在js中，实现异步的方式主要有两种，一是回调函数，二是Promise实现（ES6及之后）</p>
+<h2 id="一、使用回调函数实现异步"><a href="#一、使用回调函数实现异步" class="headerlink" title="一、使用回调函数实现异步"></a>一、使用回调函数实现异步</h2><p>使用回调函数callback处理的时候，callback作为参数传递给任何异步函数，来告知在结果准备好时调用另一个函数。</p>
+<pre class=" language-javascript"><code class="language-javascript">    <span class="token function">doSomethingAsync</span><span class="token punctuation">(</span>callback<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// doSometingAsync接收回调函数作为参数（只传递引用，几乎无开销） </span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'complete'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// 当doSomethingAsync完成时，回调</span>
+    <span class="token keyword">function</span> <span class="token function">callback</span><span class="token punctuation">(</span>error <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+       <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>error<span class="token punctuation">)</span>
+           console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'doSomethingAsync finished'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Terminal 的结果是：</p>
+<pre class=" language-powershell"><code class="language-powershell">complete
+doSomethingAsync finished</code></pre>
+<p>当我们想串行执行几个异步任务的时候，往往会想到使用嵌套回调函数来实现。事实上，当我们在js中使用大量异步回调时，容易造成“<a href="http://callbackhell.com/" target="_blank" rel="noopener">回调地狱</a>”问题，使得错误处理逻辑混乱并且代码阅读困难。解决回调地狱，可以使用Promise +Generator + Async / Await 。</p>
+<h2 id="二、使用ES6中的Promise实现异步"><a href="#二、使用ES6中的Promise实现异步" class="headerlink" title="二、使用ES6中的Promise实现异步"></a>二、使用ES6中的Promise实现异步</h2><p>  单从字面意义出发，我想理解为Promise就是JavaScript对于用户请求的数据返回承诺。Promise不仅是实现异步，还可以解决因为大量回调串行造成的回调地狱。在ES6中依旧可以使用回调，但是Promise提供了更加去清洗的语法chains异步命令，因此可以串行运行。 </p>
+<p>  Promise的三种状态： pending（等待） 、resolved/fulfilled（已完成） 、rejected(已拒绝)。状态的转换只可以是pending → fulfilled / rejected</p>
+<p>Promise构造函数的两个参数：</p>
+<ul>
+<li>resolve： 处理成功之完成之后运行的回调函数 pending → fulfilled</li>
+<li>reject：发生故障时运行的可选回调函数 pending → rejected<br>两者都可以传入任意类型的值作为实参，表示Promise对象成功/失败的值</li>
+</ul>
+<p>Promise常用的三种方法有：</p>
+<ul>
+<li>then——异步执行成功之后的数据状态变为 resolve</li>
+<li>catch——异步执行失败之后的数据状态变为reject</li>
+<li>all——多个没有关系的 Promise 封装成为一个 Promise对象,使用then返回一个数组数据</li>
+<li>ES2018引入了.finally方法，无论如何都会运行的逻辑，目前仅支持Chrome和Firebox</li>
+</ul>
+<p><strong>1. then方法——顺序的异步</strong></p>
+<pre class=" language-javascript"><code class="language-javascript">promise<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>onFulfilled<span class="token punctuation">,</span> onRejected<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 均为可选参数</span></code></pre>
+<p>异步链 Promise Chains 的实现</p>
+<pre class=" language-javascript"><code class="language-javascript">promise<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>onFulfilled1<span class="token punctuation">,</span> onRejected1<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>onFulfilled2<span class="token punctuation">,</span>onRejected2<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>举个栗子（两个Promise实现3s后打印）</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">let</span> promiseA <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span>reslove<span class="token punctuation">,</span>reject<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+      <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'success'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+promiseB <span class="token operator">=</span> promiseA<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>res <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+      <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+        <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'PromiseB 中返回一个Promise对象'</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span><span class="token number">2000</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+promiseB<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>res <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true">// 3s之后打印“PromiseB ... ” </span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p>再举个坏栗子（抛异常）：</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">const</span> db <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'dataset'</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">//connect to the database</span>
+<span class="token keyword">function</span> <span class="token function">asyncDBconnect</span><span class="token punctuation">(</span>param<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> reject<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+      db<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>param<span class="token punctuation">,</span> <span class="token punctuation">(</span>err<span class="token punctuation">,</span> connection<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+          <span class="token function">reject</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//连接失败,处理异常</span>
+        <span class="token keyword">else</span>
+          <span class="token function">resolve</span><span class="token punctuation">(</span>connection<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>数据库API提供一个接收回调函数的connect()方法;<br>外部的asyncDBcontent()函数立刻返回一个新的Promise,并在简历之前的连接或者失败之后运行resolve或者reject<br> <strong>2.all 方法——多个异步调用，同时启动，无关顺序</strong></p>
+<pre class=" language-javascript"><code class="language-javascript">Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">[</span>async1<span class="token punctuation">,</span> async2<span class="token punctuation">,</span> async3<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>values <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>values<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> values<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>err <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p>在上述例子中，接收一组函数并且返回另外一个Promise，在all中的所有异步操作结束之后才能回调。<br>特点：如果任何一个异步函数调用失败，则Promise.all()立即终止<br> <strong>3.race 方法——多个异步调用，仅最快的Promise才能完成</strong><br> 与all()类似，race()也是多个异步的调用，但是不同的是他会在第一个Promise对象 resolve或者reject 之后立即执行回调（解析或拒绝），不用等待全部的Promise 执行完成。</p>
+<pre class=" language-javascript"><code class="language-javascript">Promise<span class="token punctuation">.</span><span class="token function">race</span><span class="token punctuation">(</span><span class="token punctuation">[</span>async1<span class="token punctuation">,</span> async2<span class="token punctuation">,</span> async3<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>value <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> value<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>err <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p>除了上述三种之外, reject()、 catch()的用法也就不做过多的赘述。值得一提的是，当Promise 状态变为rejected的时候会被reject()、catch()捕捉到，而当.catch()前面已经设置了reject的回调函数，.catch()不会捕捉到状态变为rejected的情况。catch还可以捕捉到在resolve 或者  reject 中发生的错误。</p>
+<p>Promise还可以在回调函数中使用return 和 throw, 所以在then 中可以return 出一个Promise对象或者其他值，也可以throw一个错误对象，但是如果没有return,将默认返回undefined, 那么后面的then中的回调函数接收到的也将是undefined.</p>
+<p>本文主要讲Promise之后，会继续写关于使用Generator 和 Async/Await 解决回调地狱~ 敬请期待hhhhh</p>
+<p>最后，附上最近看到的一道题：<strong>如何实现sleep的效果？</strong><br><strong>1、while循环的方式</strong></p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">var</span> start <span class="token operator">=</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span>Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> start <span class="token operator">+</span>time<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'sleep-1,休眠结束！'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>缺点： 容易造成死循环<br><strong>2、Promise的方式</strong></p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">var</span> temp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span> <span class="token punctuation">(</span>reslove<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'sleep2-1'</span><span class="token punctuation">)</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> time<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> temp<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'sleep2-2'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 延迟500ms输出</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p><strong>3、async封装的方式</strong></p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span>resolve<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span>time<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">var</span> temp <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'sleep-3'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> temp<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 延迟1000ms之后输出了‘sleep-3’</span></code></pre>
+<p><strong>4、generate的方式</strong></p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">function</span><span class="token operator">*</span> <span class="token function">sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">yield</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span>reject<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'sleep-4:1'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> time<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>value<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'sleep-4:2'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//500ms之后输出</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p>sleep写多了，cc困了(￣o￣) . z Z，晚安~</p>
 <script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
@@ -502,7 +626,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://caseylu.com/2020/02/29/wo-de-ge-ren-bo-ke-shang-xian-liao/">http://caseylu.com/2020/02/29/wo-de-ge-ren-bo-ke-shang-xian-liao/</a>
+                    <a href="http://caseylu.com/2020/03/01/js-zhong-de-yi-bu-cheng-nuo-promise/">http://caseylu.com/2020/03/01/js-zhong-de-yi-bu-cheng-nuo-promise/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -703,9 +827,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2020/03/01/js-zhong-de-yi-bu-cheng-nuo-promise/">
                     <div class="card-image">
@@ -724,9 +849,9 @@ JS 是一种典型的单线程语言，这是由它在浏览器上运行的性�
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-03-01
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-01
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -735,6 +860,7 @@ JS 是一种典型的单线程语言，这是由它在浏览器上运行的性�
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -745,19 +871,21 @@ JS 是一种典型的单线程语言，这是由它在浏览器上运行的性�
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/02/29/hello-world/">
+                <a href="/2020/02/29/wo-de-ge-ren-bo-ke-shang-xian-liao/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="四年一遇的日子~~~我的个人博客上线了">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">四年一遇的日子~~~我的个人博客上线了</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
+                            思考了关于很多个人将来的打算，现阶段处于知识储备阶段，对于前段学习的内容虽然有基础，仍然需要进阶。
+今天看了很多大牛的博客，尤其是冴羽大大的还有小伍小姐的Blog，感触很深。优秀的人总是会始终坚持着自己的习惯。
+于是晚上建了个人博客，准备随
                         
                     </div>
                     <div class="publish-info">
